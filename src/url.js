@@ -83,7 +83,7 @@ export default function URL() {
                         <td className="urlcol">{item.longUrl}</td>
                         <td className="surlcol">
                           <a
-                            href={`http://localhost:8080/${item.shortUrl}`}
+                            href={`https://myurlapp.herokuapp.com/${item.shortUrl}`}
                             target="_blank"
                           >
                             http://localhost:8080/{item.shortUrl}
