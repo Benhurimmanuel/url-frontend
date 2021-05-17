@@ -86,7 +86,7 @@ export default function URL() {
                             href={`https://myurlapp.herokuapp.com/${item.shortUrl}`}
                             target="_blank"
                           >
-                            urlshortner/{item.shortUrl}
+                           https://myurlapp.herokuapp.com/{item.shortUrl}
                           </a>
                         </td>
                       </tr>
