@@ -1,99 +1,89 @@
-import React, { Component } from 'react';
+import React, { useState } from "react";
+import { PostUserRegister } from "./api";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useHistory,
+} from "react-router-dom";
 
-import './Auth.css';
+export default function Register() {
+  let history = useHistory();
+  const [userEmail, setUserEmail] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const userData = { userEmail, userName, userPassword };
 
-class AuthPage extends Component {
-  state = {
-    isLogin: true
-  };
-
-  constructor(props) {
-    super(props);
-    this.emailEl = React.createRef();
-    this.passwordEl = React.createRef();
-  }
-
-  switchModeHandler = () => {
-    this.setState(prevState => {
-      return { isLogin: !prevState.isLogin };
-    });
-  };
-
-  submitHandler = event => {
-    event.preventDefault();
-    const email = this.emailEl.current.value;
-    const password = this.passwordEl.current.value;
-
-    if (email.trim().length === 0 || password.trim().length === 0) {
-      return;
-    }
-
-    let requestBody = {
-      query: `
-        query {
-          login(email: "${email}", password: "${password}") {
-            userId
-            token
-            tokenExpiration
+  return (
+    <>
+      <form
+        className="mt-5"
+        onSubmit={async (e) => {
+          e.preventDefault();
+          await PostUserRegister(userData);
+          if (userData) {
+            history.push(`/login`);
+          } else {
+            alert("register");
           }
-        }
-      `
-    };
-
-    if (!this.state.isLogin) {
-      requestBody = {
-        query: `
-          mutation {
-            createUser(userInput: {email: "${email}", password: "${password}"}) {
-              _id
-              email
-            }
-          }
-        `
-      };
-    }
-
-    fetch('http://localhost:8000/graphql', {
-      method: 'POST',
-      body: JSON.stringify(requestBody),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error('Failed!');
-        }
-        return res.json();
-      })
-      .then(resData => {
-        console.log(resData);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
-  render() {
-    return (
-      <form className="auth-form" onSubmit={this.submitHandler}>
-        <div className="form-control">
-          <label htmlFor="email">E-Mail</label>
-          <input type="email" id="email" ref={this.emailEl} />
+        }}
+      >
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            placeholder="name@example.com"
+            value={userEmail}
+            onChange={(e) => {
+              setUserEmail(e.target.value);
+            }}
+          />
         </div>
-        <div className="form-control">
-          <label htmlFor="password">Password</label>
-          <input type="password" id="password" ref={this.passwordEl} />
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">
+            Name
+          </label>
+          <input
+            name="name"
+            type="text"
+            className="form-control"
+            placeholder="John Doe"
+            value={userName}
+            onChange={(e) => {
+              setUserName(e.target.value);
+            }}
+          />
         </div>
-        <div className="form-actions">
-          <button type="submit">Submit</button>
-          <button type="button" onClick={this.switchModeHandler}>
-            Switch to {this.state.isLogin ? 'Signup' : 'Login'}
+        <div className="mb-3">
+          <label htmlFor="Password" className="form-label">
+            Password
+          </label>
+          <input
+            name="Password"
+            type="Password"
+            className="form-control"
+            placeholder="Enter password"
+            value={userPassword}
+            onChange={(e) => {
+              setUserPassword(e.target.value);
+            }}
+          />
+        </div>
+        <div className="mb-3">
+          <button type="submit" className="form-control btn btn-warning">
+            Submit
           </button>
         </div>
+        <div className="mb-3">
+          <h6 className="offset-1 offset-sm-3 offset-md-4 offset-lg-4 mt-5">
+            Already Signed up! <Link to="/login">click here</Link> to login
+          </h6>
+        </div>
       </form>
-    );
-  }
+    </>
+  );
 }
-
-export default AuthPage;
