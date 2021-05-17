@@ -1,6 +1,6 @@
 import React from "react";
 import Register from "./register";
-import Login from "./login";
+import Login from "./logi   n";
 import URL from "./url";
 import Topbar from "./topbar";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -22,7 +22,7 @@ function App() {
             <Route path="/register" exact="true">
               <Register></Register>
             </Route>
-            <Route path="/urlshortner/:id" exact="true">
+            <Route path="/urlshortener/:id" exact="true">
               <URL></URL>
             </Route>
           </Switch>
