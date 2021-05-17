@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 export default function Welcome() {
   return (
     <>
-      <h1 className="mt-5 mb-5">URL Shortener App </h1>
+      <h1 className="mt-5 mb-5">URL Shortner App </h1>
       <div className="mainpage">
         <div className="row p-3">
           <h3 className="offset-2 offset-md-1 offset-lg-1 offset-xl-2 h3">
